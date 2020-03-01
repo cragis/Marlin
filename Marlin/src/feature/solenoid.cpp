@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2016 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 
 #include "../inc/MarlinConfig.h"
 
-#if ENABLED(EXT_SOLENOID) || ENABLED(MANUAL_SOLENOID_CONTROL)
+#if EITHER(EXT_SOLENOID, MANUAL_SOLENOID_CONTROL)
 
 #include "solenoid.h"
 
@@ -67,7 +67,7 @@ static void set_solenoid(const uint8_t num, const bool active) {
         break;
     #endif
     default:
-      SERIAL_ECHO_MSG(MSG_INVALID_SOLENOID);
+      SERIAL_ECHO_MSG(STR_INVALID_SOLENOID);
       break;
   }
 }
@@ -95,4 +95,4 @@ void disable_all_solenoids() {
   #endif
 }
 
-#endif // EXT_SOLENOID
+#endif // EXT_SOLENOID || MANUAL_SOLENOID_CONTROL
