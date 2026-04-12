@@ -60,3 +60,6 @@
 #ifndef __MARLIN_DEPS__
   #include HAL_PATH(../HAL, inc/Conditionals_adv.h)
 #endif
+
+
+#include "../custom/process_control.h"
