@@ -148,6 +148,7 @@ namespace Language_en {
   LSTR MSG_LASER_FIRE_PULSE               = _UxGT("Fire Pulse");
   LSTR MSG_FLOWMETER_FAULT                = _UxGT("Coolant Flow Fault");
   LSTR MSG_SPINDLE_TOGGLE                 = _UxGT("Toggle Spindle");
+  LSTR MSG_TOGGLE_MOTION                  = _UxGT("Toggle Motion");
   LSTR MSG_SPINDLE_EVAC_TOGGLE            = _UxGT("Toggle Vacuum");
   LSTR MSG_SPINDLE_FORWARD                = _UxGT("Spindle Forward");
   LSTR MSG_SPINDLE_REVERSE                = _UxGT("Spindle Reverse");

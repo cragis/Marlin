@@ -93,6 +93,11 @@ void action_toggle_extruder() {
   ui.return_to_status();
 }
 
+void lcd_cooldown_mm() {
+    thermalManager.cooldown();
+    ui.return_to_status();
+}
+
 
 #if ENABLED(PSU_CONTROL)
   #include "../../feature/power.h"
@@ -294,11 +299,12 @@ void menu_main() {
 
 
 //cmh
-  ACTION_ITEM(MSG_INVADERS, action_toggle_extruder);
+  ACTION_ITEM(MSG_TOGGLE_MOTION, action_toggle_extruder);
   // ACTION_ITEM(MSG_BRICKOUT, [](){ui.set_status("Pultruder OK");});
   ACTION_ITEM(MSG_PREHEAT_CUSTOM,action_turn_on_heater);
-
-
+    editable.celsius = thermalManager.temp_hotend[0].target;
+    EDIT_ITEM_FAST(int3, MSG_NOZZLE, &editable.celsius, 0, thermalManager.hotend_max_target(0), []{ thermalManager.setTargetHotend(editable.celsius, 0); });
+  ACTION_ITEM(MSG_COOLDOWN, lcd_cooldown_mm);
   #if ENABLED(SDSUPPORT)
 
     #if !defined(MEDIA_MENU_AT_TOP) && !HAS_ENCODER_WHEEL

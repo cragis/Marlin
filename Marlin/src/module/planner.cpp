@@ -1914,6 +1914,7 @@ bool Planner::_populate_block(
           TERN_(HAS_POSITION_FLOAT, position_float.e = target_float.e);
           de = 0; // no difference
           SERIAL_ECHO_MSG(STR_ERR_COLD_EXTRUDE_STOP);
+          ui.set_status("Cold extrusion blocked");
         }
       #endif // PREVENT_COLD_EXTRUSION
       #if ENABLED(PREVENT_LENGTHY_EXTRUDE)
