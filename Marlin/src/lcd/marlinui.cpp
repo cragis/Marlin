@@ -20,9 +20,14 @@
  *
  */
 
+
+
 #include "../inc/MarlinConfig.h"
 
 #include "../MarlinCore.h" // for printingIsPaused
+
+// cmh pultruder specific stuff
+static millis_t extruder_start_time = 0;
 
 #if LED_POWEROFF_TIMEOUT > 0 || BOTH(HAS_WIRED_LCD, PRINTER_EVENT_LEDS)
   #include "../feature/leds/leds.h"
@@ -910,6 +915,9 @@ void MarlinUI::init() {
     static uint16_t max_display_update_time = 0;
     millis_t ms = millis();
 
+    millis_t elapsed = ms - extruder_start_time;
+
+
     #if LED_POWEROFF_TIMEOUT > 0
       leds.update_timeout(powerManager.psu_on);
     #endif
@@ -931,6 +939,8 @@ void MarlinUI::init() {
         lcd_clicked = !wait_for_user;                   //  - Keep the click if not waiting for a user-click
         wait_for_user = false;                          //  - Any click clears wait for user
         quick_feedback();                               //  - Always make a click sound
+        //system_enabled = !system_enabled;           //cmh
+        //ui.set_status(system_enabled ? "ON" : "OFF");  //cmh
       };
 
       #if HAS_TOUCH_BUTTONS

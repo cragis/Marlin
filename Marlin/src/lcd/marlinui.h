@@ -54,6 +54,7 @@
 
 typedef bool (*statusResetFunc_t)();
 
+
 #if HAS_WIRED_LCD
 
   enum LCDViewAction : uint8_t {

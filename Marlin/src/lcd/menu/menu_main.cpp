@@ -35,6 +35,65 @@
 #include "../../module/stepper.h"
 #include "../../sd/cardreader.h"
 
+
+
+
+//cmh
+static bool extruder_running = false;
+static float extruder_speed = 2.0f;  // mm/s
+
+
+
+
+
+
+void action_pultruder_query(){
+  ui.set_status("Pultruder OK");
+}
+
+void action_turn_on_heater(){
+  thermalManager.setTargetHotend(194,0);
+  ui.set_status("Heater ON");
+  ui.return_to_status();  //exit menu
+}
+
+void start_extruder() {
+
+  print_job_timer.start();
+
+  queue.inject(F("M83"));  // relative extrusion
+
+  char buf[40];
+  sprintf_P(buf, PSTR("G1 E10000000 F%.0f"), extruder_speed * 60.0f);
+
+  queue.inject(buf);
+}
+
+void stop_extruder() {
+
+
+  planner.quick_stop();   // unclean stop
+  print_job_timer.pause();
+}
+
+
+
+void action_toggle_extruder() {
+
+  extruder_running = !extruder_running;
+
+  if (extruder_running) {
+    ui.set_status("Extruder ON");
+    start_extruder();
+  } else {
+    ui.set_status("Extruder OFF");
+    stop_extruder();
+  }
+
+  ui.return_to_status();
+}
+
+
 #if ENABLED(PSU_CONTROL)
   #include "../../feature/power.h"
 #endif
@@ -232,6 +291,13 @@ void menu_main() {
 
   START_MENU();
   BACK_ITEM(MSG_INFO_SCREEN);
+
+
+//cmh
+  ACTION_ITEM(MSG_INVADERS, action_toggle_extruder);
+  // ACTION_ITEM(MSG_BRICKOUT, [](){ui.set_status("Pultruder OK");});
+  ACTION_ITEM(MSG_PREHEAT_CUSTOM,action_turn_on_heater);
+
 
   #if ENABLED(SDSUPPORT)
 

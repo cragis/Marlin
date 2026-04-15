@@ -22,7 +22,10 @@
 
 #include "../../inc/MarlinConfigPre.h"
 
+
+
 #if HAS_MARLINUI_HD44780
+
 
 /**
  * marlinui_HD44780.cpp
@@ -900,21 +903,23 @@ void MarlinUI::draw_status_screen() {
 
           #else // !HAS_DUAL_MIXING
 
-            const bool show_e_total = TERN0(LCD_SHOW_E_TOTAL, printingIsActive());
+            const bool show_e_total = TERN0(LCD_SHOW_E_TOTAL, true);
 
             if (show_e_total) {
               #if ENABLED(LCD_SHOW_E_TOTAL)
                 char tmp[20];
                 const uint8_t escale = e_move_accumulator >= 100000.0f ? 10 : 1; // After 100m switch to cm
-                sprintf_P(tmp, PSTR("E %ld%cm       "), uint32_t(_MAX(e_move_accumulator, 0.0f)) / escale, escale == 10 ? 'c' : 'm'); // 1234567mm
+                sprintf_P(tmp, PSTR("%ld%cm       "), uint32_t(_MAX(e_move_accumulator, 0.0f)) / escale, escale == 10 ? 'c' : 'm'); // 1234567mm
                 lcd_put_u8str(tmp);
               #endif
             }
             else {
-              const xy_pos_t lpos = current_position.asLogical();
-              _draw_axis_value(X_AXIS, ftostr4sign(lpos.x), blink);
-              lcd_put_lchar(' ');
-              _draw_axis_value(Y_AXIS, ftostr4sign(lpos.y), blink);
+              //const xy_pos_t lpos = current_position.asLogical();
+              //char msg[32];
+              //snprintf(msg, sizeof(msg), "%lu", elapsed);
+              //lcd_put_u8str(msg);
+              //lcd_put_lchar(' ');
+              //_draw_axis_value(Y_AXIS, ftostr4sign(lpos.y), blink);
             }
 
           #endif // !HAS_DUAL_MIXING
@@ -923,8 +928,8 @@ void MarlinUI::draw_status_screen() {
 
       #endif // LCD_WIDTH >= 20
 
-      lcd_moveto(LCD_WIDTH - 8, 1);
-      _draw_axis_value(Z_AXIS, ftostr52sp(LOGICAL_Z_POSITION(current_position.z)), blink);
+     //cmh removed lcd_moveto(LCD_WIDTH - 8, 1);
+     //cmh removed _draw_axis_value(Z_AXIS, ftostr52sp(LOGICAL_Z_POSITION(current_position.z)), blink);
 
       #if HAS_LEVELING && !HAS_HEATED_BED
         lcd_put_lchar(planner.leveling_active || blink ? '_' : ' ');
@@ -1050,7 +1055,10 @@ void MarlinUI::draw_status_screen() {
   //
   // Status Message (which may be a Progress Bar or Filament display)
   //
-  draw_status_message(blink);
+
+  draw_status_message(false);
+  //lcd_moveto(0,3);
+  //lcd_put_u8str("HeLLO");
 }
 
 #if HAS_MARLINUI_MENU
